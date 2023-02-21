@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <!-- 
+      keyDown : 키보드가 눌리자마자
+      keyUp : 키가 눌리는 진행중인 상태
+      KeyPress : 키를 땠을 떄 특정키를 인식못함 옵션키
+          -->
+    <input type="text" v-model="newTodoItem" @keydown="addTodo"/>
 
     <table>
       <thead>
@@ -15,10 +21,10 @@
         <!-- v-for="objectName in arrayName" v-bind:key="objectName.id" -->
         <!-- 테이블에서 반복문이 여러개인 경우 키값이 중복 될 수 있어 배열 값 'todo'+ 붙여주기 -->
         <!-- {{  }} 괄호가 한개이면 값을 String으로 인식하기 때문에 JS에서 괄호를 2개 써준다 -->
-        <tr v-for="todo in todoList" :key="'todo_' + todo.id">
+        <tr v-for="(todo, index) in todoList" :key="'todo_' + todo.id">
           <td>{{ todo.id }}</td>
           <td>{{ todo.todo }}</td>
-          <td>{{ todo.isCompleted }}</td>
+          <td @click="toggleStatus(index)">{{ todo.isCompleted }}</td> 
           <td><button>EDIT</button></td>
           <td><button>DELETE</button></td>
         </tr>
@@ -33,6 +39,8 @@ export default {
 
   data() {
     return {
+      newTodoItem: "",
+
       todoList: [
       {
         id: 1,
@@ -61,8 +69,33 @@ export default {
       },
     ]
     }
-  }
-}
+  },
+  methods: {
+    toggleStatus(index){
+      console.log("toggleStatus");
+
+      // this.todoList[index].isCompleted =!this.todoList[index].isCompleted
+      if(this.todoList[index].isCompleted) {
+        this.todoList[index].isCompleted = false;
+      } else{
+        this.todoList[index].isCompleted = true;
+      }
+    },
+    addTodo(e){
+      console.log("addTodo", e);
+      if(e.keyCode === 13){
+        let newTodoObj ={
+          id: this.todoList.length + 1,
+          todo: this.newTodoItem,
+          isCompleted: false,
+        };
+
+        this.todoList.push(newTodoObj);
+      }
+    },
+
+  },
+};
 </script>
 
 <style>
