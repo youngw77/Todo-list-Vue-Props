@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>연습1</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="newTodoItem" @keydown="addTodo">
+        <table>
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>TODO</th>
+                    <th>DONE</th>
+                    <th>EDIT</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(todo, index) in todoList" v-bind:key="'todo_' + todo.id">
+                    <td>{{ todo.id }}</td>
+                    <td v-if="todo.edit === false">{{ todo.todo }}</td>
+                    <td v-else><input type="text" 
+                        v-bind:placeholder="todo.todo" 
+                        v-model="editTodoItem"
+                        @keydown="editTodoText($event, index)"
+                        ></td>
+                    <td @click="toggleStatus(index)">{{ todo.done }}</td>
+                    <td><button @click="editTodo(index)">edit</button></td>
+                    <td><button @click="deleteTodo(index)">delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                newTodoItem: "",
+                editTodoItem: "",
+                todoList:[
+                {
+                    id: 1,
+                    todo: "Vue",
+                    done: false,
+                    edit: false,
+                },
+                {
+                    id: 2,
+                    todo: "React",
+                    done: false,
+                    edit: false,
+                },
+                {
+                    id: 3,
+                    todo: "Angular",
+                    done: false,
+                    edit: false,
+                }
+            ]
+            },
+            methods:{
+                toggleStatus(index){
+                    console.log("toggleStatus");
+                    if(this.todoList[index].done){
+                        this.todoList[index].done = false;
+                    } else {
+                        this.todoList[index].done = true;
+                    }
+                },
+                addTodo(e){
+                    console.log(e);
+                    console.log(e.keyCode);
+                    if(e.keyCode === 13 && this.todoList.length>0){
+                        let newTodoObj ={
+                            id: this.todoList[this.todoList.length-1].id + 1,
+                            todo: this.newTodoItem,
+                            done: false,
+                            edit: false,
+                        }
+                        this.todoList.push(newTodoObj);
+                        this.newTodoItem="";
+                    }
+                    else if(e.keyCode === 13 && this.todoList.length === 0){
+                        let newTodoObj ={
+                            id: 1,
+                            todo: this.newTodoItem,
+                            done: false,
+                            edit: false,
+                        }
+                        this.todoList.push(newTodoObj);
+                        this.newTodoItem="";
+                    }
+                },
+                deleteTodo(index){
+                    console.log(index);
+                    this.todoList.splice(index, 1);
+                },
+                editTodo(index){
+                    console.log("index", index);
+                    if(this.todoList[index].edit){
+                        this.todoList[index].edit = false;
+                    } else{
+                        this.todoList[index].edit = true;   
+                    }
+                },
+                editTodoText(e, index){
+                    console.log('editTodoText');
+                    if(e.keyCode === 13){
+                        this.todoList[index].todo = this.editTodoItem;
+                        this.editTodo(index);
+                        this.editTodoItem="";
+                    }
+                },
+                
+            }
+        })
+    </script>
+</body>
+<style>
+    #app {
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 60px;
+    }
+    
+    table thead tr th{
+      height: 30px;
+      background-color: black;
+      color: white;
+    }
+    
+    table thead tr th:nth-child(2){
+      width: 150px;
+    }
+    
+    table tbody tr td{
+      height: 30px;
+    }
+    
+    /* odd even 홀짝 나누기 */
+    table tbody tr:nth-child(odd){
+      background-color: #cccccc;
+    }
+    
+    table tbody tr:hover{
+      background-color: lightgreen;
+      cursor: pointer;
+    }
+    
+</style>
+</html>

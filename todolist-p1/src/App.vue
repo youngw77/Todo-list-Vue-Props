@@ -24,7 +24,10 @@
         <tr v-for="(todo, index) in todoList" :key="'todo_' + todo.id">
           <td>{{ todo.id }}</td>
           <td v-if="todo.isEdit === false">{{ todo.todo }}</td>
-          <td v-else><input type="text" v-bind:placeholder="todo.todo" v-model="editTodoItem" @keydown="editTodoText($event, index)"></td>
+          <td v-else><input type="text" 
+            v-bind:placeholder="todo.todo" 
+            v-model="editTodoItem" 
+            @keydown="editTodoText($event, index)"></td>
           <td @click="toggleStatus(index)">{{ todo.isCompleted }}</td> 
           <td><button @click="editTodo(index)">EDIT</button></td>
           <td><button @click="deleteTodo(index)">DELETE</button></td>
@@ -120,6 +123,7 @@ export default {
         this.todoList[index].isEdit = true;
       }
     },
+    // editTodoText: function(e, index) == editTodoText(e, index)
     editTodoText(e, index){
       console.log('editTodoText');
       if(e.keyCode === 13){
