@@ -23,10 +23,11 @@
         <!-- {{  }} 괄호가 한개이면 값을 String으로 인식하기 때문에 JS에서 괄호를 2개 써준다 -->
         <tr v-for="(todo, index) in todoList" :key="'todo_' + todo.id">
           <td>{{ todo.id }}</td>
-          <td>{{ todo.todo }}</td>
+          <td v-if="todo.isEdit === false">{{ todo.todo }}</td>
+          <td v-else><input type="text" v-bind:placeholder="todo.todo" v-model="editTodoItem" @keydown="editTodoText($event, index)"></td>
           <td @click="toggleStatus(index)">{{ todo.isCompleted }}</td> 
-          <td><button>EDIT</button></td>
-          <td><button>DELETE</button></td>
+          <td><button @click="editTodo(index)">EDIT</button></td>
+          <td><button @click="deleteTodo(index)">DELETE</button></td>
         </tr>
       </tbody>
     </table>
@@ -40,32 +41,37 @@ export default {
   data() {
     return {
       newTodoItem: "",
-
+      editTodoItem: '',
       todoList: [
       {
         id: 1,
         todo: 'Study Javascript',
         isCompleted: false,
+        isEdit: false,
       },
       {
         id: 2,
         todo: 'Do Homework',
         isCompleted: false,
+        isEdit: false,
       },
       {
         id: 3,
         todo: 'Take a shower',
         isCompleted: false,
+        isEdit: false,
       },
       {
         id: 4,
         todo: 'Brush Teeth',
         isCompleted: false,
+        isEdit: false,
       },
       {
         id: 5,
         todo: 'Talk to you',
         isCompleted: false,
+        isEdit: false,
       },
     ]
     }
@@ -83,17 +89,51 @@ export default {
     },
     addTodo(e){
       console.log("addTodo", e);
+
+      let length = this.todoList.length;
+      console.log('length', length)
+
       if(e.keyCode === 13){
         let newTodoObj ={
-          id: this.todoList.length + 1,
+          id: this.todoList[this.todoList.length-1].id + 1,
+          // id: this.todoList.length + 1,
           todo: this.newTodoItem,
           isCompleted: false,
+          isEdit: false,
         };
 
         this.todoList.push(newTodoObj);
+        this.newTodoItem = ""
       }
     },
-
+    deleteTodo(index){
+      console.log("deleteTodo", index);
+      this.todoList.splice(index, 1);
+    },
+    editTodo(index){
+      console.log("index", index);
+      // this.todoList[index].isEdit =! this.todoList[index].isEdit;
+      if(this.todoList[index].isEdit){
+        this.todoList[index].isEdit = false;
+      }
+      else{
+        this.todoList[index].isEdit = true;
+      }
+    },
+    editTodoText(e, index){
+      console.log('editTodoText');
+      if(e.keyCode === 13){
+        this.todoList[index].todo = this.editTodoItem;
+      // if(this.todoList[index].isEdit){
+      // this.todoList[index].isEdit = false;
+      // }
+      // else{
+      //   this.todoList[index].isEdit = true;
+      // }
+      this.editTodo(index);
+      this.editTodoItem="";
+      }
+    }
   },
 };
 </script>
