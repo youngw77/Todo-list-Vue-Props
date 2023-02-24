@@ -29,8 +29,8 @@
             v-model="editTodoItem" 
             @keydown="editTodoText($event, index)"></td>
           <td @click="toggleStatus(index)">{{ todo.isCompleted }}</td> 
-          <td><button @click="editTodo(index)">EDIT</button></td>
-          <td><button @click="deleteTodo(index)">DELETE</button></td>
+          <td><button @click="editTodo(index)">edit</button></td>
+          <td><button @click="deleteTodo(index)">delete</button></td>
         </tr>
       </tbody>
     </table>
@@ -96,15 +96,25 @@ export default {
       let length = this.todoList.length;
       console.log('length', length)
 
-      if(e.keyCode === 13){
+      if(e.keyCode === 13 && this.todoList.length>0){
         let newTodoObj ={
           id: this.todoList[this.todoList.length-1].id + 1,
           // id: this.todoList.length + 1,
           todo: this.newTodoItem,
           isCompleted: false,
           isEdit: false,
-        };
-
+        }
+        this.todoList.push(newTodoObj);
+        this.newTodoItem = ""
+      }
+      else if(e.keyCode === 13 && this.todoList.length === 0){
+        let newTodoObj ={
+          id: 1,
+          // id: this.todoList.length + 1,
+          todo: this.newTodoItem,
+          isCompleted: false,
+          isEdit: false,
+        }
         this.todoList.push(newTodoObj);
         this.newTodoItem = ""
       }
