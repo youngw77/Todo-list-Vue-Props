@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <input type="text" v-model="newTodoItem" @keydown="addTodo"/> -->
-    <add-todo placeholder="please todo write ....."></add-todo>
+    <add-todo v-bind:placeholder="placeholder"></add-todo>
     <table>
       <thead>
         <tr>
