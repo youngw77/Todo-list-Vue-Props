@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <!-- <input type="text" v-model="newTodoItem" @keydown="addTodo"/> -->
-    <add-todo v-bind:placeholder="placeholder"></add-todo>
+    <add-todo v-bind:placeholder="placeholder"
+    v-on:emit-add-too="emitAddTodo"
+    ></add-todo>
     <table>
       <thead>
         <tr>
@@ -82,6 +84,9 @@ export default {
     }
   },
   methods: {
+    emitAddTodo(){
+      console.log("parent", "emit add todo");
+    },
     toggleStatus(index){
       if(this.todoList[index].isCompleted) {
         this.todoList[index].isCompleted = false;

@@ -30,6 +30,8 @@ export default {
           isEdit: false,
         };
 
+        this.$emit('emit-add-todo', newTodoObj);
+
         this.todoList.push(newTodoObj);
         this.newTodoItem = ""
       }
