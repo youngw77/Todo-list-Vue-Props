@@ -6,7 +6,6 @@
       KeyPress : 키를 땠을 떄 특정키를 인식못함 옵션키
           -->
     <input type="text" v-model="newTodoItem" @keydown="addTodo"/>
-
     <table>
       <thead>
         <tr>
@@ -132,7 +131,6 @@ table tbody tr td{
   height: 30px;
 }
 
-/* odd even 홀짝 나누기 */
 table tbody tr:nth-child(odd){
   background-color: #cccccc;
 }
@@ -142,4 +140,7 @@ table tbody tr:hover{
   cursor: pointer;
 }
 
+input[type=text]{
+  background-color: rgb(248, 236, 236);
+}
 </style>
